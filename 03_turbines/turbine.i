@@ -1,21 +1,21 @@
 #¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨#
 #            SIMULATION CONTROL         #
 #.......................................#
-time.stop_time                           = 5401.0             # Max (simulated) time to evolve [s]
+time.stop_time                           = 7801.0             # Max (simulated) time to evolve [s]
 time.max_step                            = -1          # Max number of time steps; -1 means termination set by timestamps
-time.fixed_dt                            = 0.5        # Use this constant dt if > 0
+time.fixed_dt                            = 0.125        # Use this constant dt if > 0
 time.cfl                                 = 0.95         # CFL factor
 
-time.plot_interval                       = 1800       # Steps between plot files
-time.checkpoint_interval                 = 1800       # Steps between checkpoint files
+time.plot_interval                       = 1200       # Steps between plot files
+time.checkpoint_interval                 = 1200       # Steps between checkpoint files
 ABL.bndry_file                           = ../02_atmosphere/precursor/bndry_file.native
 ABL.bndry_io_mode                        = 1          # 0 = write, 1 = read
 ABL.bndry_planes                         = ylo xlo
-ABL.bndry_output_start_time              = 3600.0
+ABL.bndry_output_start_time              = 7200.0
 ABL.bndry_var_names                      = velocity temperature tke
 
 incflo.physics                           = ABL Actuator
-io.restart_file                          = ../spinup/chk07200   
+io.restart_file                          = ../02_atmosphere/spinup/chk14400   
 incflo.use_godunov                       = 1
 incflo.godunov_type                      = weno_z                 
 turbulence.model                         = OneEqKsgsM84  # For neutral ABL, use "Smagorinsky"
@@ -59,19 +59,19 @@ zhi.temperature                          = 0.003
 #¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨#
 #               PHYSICS                 #
 #.......................................#
-ICNS.source_terms                        = BoussinesqBuoyancy CoriolisForcing ABLForcing
+ICNS.source_terms                        = BoussinesqBuoyancy CoriolisForcing BodyForce ABLMeanBoussinesq ActuatorForcing
 ##--------- Additions by calc_inflow_stats.py ---------#
-#ABL.wall_shear_stress_type = "local"
-#ABL.inflow_outflow_mode = true
-#ABL.wf_velocity = XX XX
-#ABL.wf_vmag = XX
-#ABL.wf_theta = XX
-#BodyForce.magnitude = XX XX XX
-#BoussinesqBuoyancy.read_temperature_profile = true
-#BoussinesqBuoyancy.tprofile_filename = avg_theta.dat
+ABL.wall_shear_stress_type = "local"
+ABL.inflow_outflow_mode = true
+ABL.wf_velocity = 7.612874161922772 0.05167978610261268
+ABL.wf_vmag = 7.655337919472146
+ABL.wf_theta = 291.0187046202964
+BodyForce.magnitude = 0.00034839850789284793 0.0009712494385077595 0.0
+BoussinesqBuoyancy.read_temperature_profile = true
+BoussinesqBuoyancy.tprofile_filename = avg_theta.dat
 ##-----------------------------------------------------#
 incflo.velocity                          = 10.0 0.0 0.0
-ABLForcing.abl_forcing_height            = 91.0
+ABLForcing.abl_forcing_height            = 86.5
 CoriolisForcing.latitude                 = 36.607322      # Southern Great Planes
 CoriolisForcing.north_vector             = 0.0 1.0 0.0
 CoriolisForcing.east_vector              = 1.0 0.0 0.0
@@ -100,11 +100,11 @@ ABL.surface_temp_flux                    = 0.05  # Surface temperature flux [K-m
 incflo.post_processing                   = sampling averaging
 
 # --- Sampling parameters ---
-sampling.output_frequency                = 900                 
+sampling.output_frequency                = 8
 sampling.fields                          = velocity temperature
 
 #---- sample defs ----
-sampling.labels                          = xy-domain yz-domain 
+sampling.labels                          = xy-domain xz-domain 
 
 sampling.xy-domain.type                  = PlaneSampler        
 sampling.xy-domain.num_points            = 256 256             
@@ -126,8 +126,8 @@ sampling.xz-domain.axis2                 = 0.0 0.0 1270.0
 averaging.type                           = TimeAveraging
 averaging.labels                         = means stress
 
-averaging.averaging_window               = 600.0
-averaging.averaging_start_time           = 3600.0
+averaging.averaging_window               = 60.0
+averaging.averaging_start_time           = 7200.0
 
 averaging.means.fields                   = velocity
 averaging.means.averaging_type           = ReAveraging

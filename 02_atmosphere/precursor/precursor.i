@@ -1,21 +1,21 @@
 #¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨#
 #            SIMULATION CONTROL         #
 #.......................................#
-time.stop_time                           = 5401.0             # Max (simulated) time to evolve [s]
+time.stop_time                           = 7801.0             # Max (simulated) time to evolve [s]
 time.max_step                            = -1          # Max number of time steps; -1 means termination set by timestamps
-time.fixed_dt                            = 0.5        # Use this constant dt if > 0
+time.fixed_dt                            = 0.125        # Use this constant dt if > 0
 time.cfl                                 = 0.95         # CFL factor
 
-time.plot_interval                       = 1800       # Steps between plot files
-time.checkpoint_interval                 = 1800       # Steps between checkpoint files
+time.plot_interval                       = 1200       # Steps between plot files
+time.checkpoint_interval                 = 1200       # Steps between checkpoint files
 ABL.bndry_file                           = bndry_file.native
 ABL.bndry_io_mode                        = 0          # 0 = write, 1 = read
 ABL.bndry_planes                         = ylo xlo
-ABL.bndry_output_start_time              = 3600.0
+ABL.bndry_output_start_time              = 7200.0
 ABL.bndry_var_names                      = velocity temperature tke
 
 incflo.physics                           = ABL # Actuator
-io.restart_file                          = ../spinup/chk07200   
+io.restart_file                          = ../spinup/chk14400   
 incflo.use_godunov                       = 1
 incflo.godunov_type                      = weno_z                 
 turbulence.model                         = OneEqKsgsM84  # For neutral ABL, use "Smagorinsky"
@@ -35,7 +35,7 @@ incflo.verbose                           =   0          # incflo_level
 geometry.prob_lo                         = 0.       0.     0.  # Lo corner coordinates
 geometry.prob_hi                         = 2560.  2560.  1280.  # Hi corner coordinates
 amr.n_cell                               = 128 128 64    # Grid cells at coarsest AMRlevel
-amr.max_level                            = 0           # Max AMR level in hierarchy 
+amr.max_level                            = 2           # Max AMR level in hierarchy 
 geometry.is_periodic                     = 1   1   0   # Periodicity x y z (0/1)
 incflo.delp                              = 0.  0.  0.  # Prescribed (cyclic) pressure gradient
 
@@ -100,11 +100,11 @@ ABL.surface_temp_flux                    = 0.05  # Surface temperature flux [K-m
 incflo.post_processing                   = sampling averaging
 
 # --- Sampling parameters ---
-sampling.output_frequency                = 900                 
+sampling.output_frequency                = 8
 sampling.fields                          = velocity temperature
 
 #---- sample defs ----
-sampling.labels                          = xy-domain yz-domain 
+sampling.labels                          = xy-domain xz-domain 
 
 sampling.xy-domain.type                  = PlaneSampler        
 sampling.xy-domain.num_points            = 256 256             
@@ -126,8 +126,8 @@ sampling.xz-domain.axis2                 = 0.0 0.0 1270.0
 averaging.type                           = TimeAveraging
 averaging.labels                         = means stress
 
-averaging.averaging_window               = 600.0
-averaging.averaging_start_time           = 3600.0
+averaging.averaging_window               = 60.0
+averaging.averaging_start_time           = 7200.0
 
 averaging.means.fields                   = velocity
 averaging.means.averaging_type           = ReAveraging
@@ -138,7 +138,63 @@ averaging.stress.averaging_type          = ReynoldsStress
 #¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨#
 #            MESH REFINEMENT            #
 #.......................................#
+tagging.labels                           = T0_level_0_zone T1_level_0_zone T2_level_0_zone T0_level_1_zone T1_level_1_zone T2_level_1_zone
 
+# 1st refinement level
+tagging.T0_level_0_zone.type             = GeometryRefinement  
+tagging.T0_level_0_zone.shapes           = T0_level_0_zone     
+tagging.T0_level_0_zone.level            = 0                   
+tagging.T0_level_0_zone.T0_level_0_zone.type = box                 
+tagging.T0_level_0_zone.T0_level_0_zone.origin = 520.0 1040.0 0.0  # -1D, -2D
+tagging.T0_level_0_zone.T0_level_0_zone.xaxis = 360.0 0.0 0.0
+tagging.T0_level_0_zone.T0_level_0_zone.yaxis = 0.0 480.0 0.0
+tagging.T0_level_0_zone.T0_level_0_zone.zaxis = 0.0 0.0 360.0
+
+tagging.T1_level_0_zone.type             = GeometryRefinement  
+tagging.T1_level_0_zone.shapes           = T1_level_0_zone     
+tagging.T1_level_0_zone.level            = 0                   
+tagging.T1_level_0_zone.T1_level_0_zone.type = box                 
+tagging.T1_level_0_zone.T1_level_0_zone.origin = 1160.0 1040.0 0.0  # -1D, -2D
+tagging.T1_level_0_zone.T1_level_0_zone.xaxis = 360.0 0.0 0.0
+tagging.T1_level_0_zone.T1_level_0_zone.yaxis = 0.0 480.0 0.0
+tagging.T1_level_0_zone.T1_level_0_zone.zaxis = 0.0 0.0 360.0
+
+tagging.T2_level_0_zone.type             = GeometryRefinement  
+tagging.T2_level_0_zone.shapes           = T2_level_0_zone     
+tagging.T2_level_0_zone.level            = 0                   
+tagging.T2_level_0_zone.T2_level_0_zone.type = box                 
+tagging.T2_level_0_zone.T2_level_0_zone.origin = 1800.0 1040.0 0.0  # -1D, -2D
+tagging.T2_level_0_zone.T2_level_0_zone.xaxis = 360.0 0.0 0.0
+tagging.T2_level_0_zone.T2_level_0_zone.yaxis = 0.0 480.0 0.0
+tagging.T2_level_0_zone.T2_level_0_zone.zaxis = 0.0 0.0 360.0
+
+# 2nd refinement level
+tagging.T0_level_1_zone.type             = GeometryRefinement  
+tagging.T0_level_1_zone.shapes           = T0_level_1_zone     
+tagging.T0_level_1_zone.level            = 1                   
+tagging.T0_level_1_zone.T0_level_1_zone.type = box                 
+tagging.T0_level_1_zone.T0_level_1_zone.origin = 580.0 1100.0 20.0  # -0.5D, -1.5D
+tagging.T0_level_1_zone.T0_level_1_zone.xaxis = 180.0 0.0 0.0
+tagging.T0_level_1_zone.T0_level_1_zone.yaxis = 0.0 360.0 0.0
+tagging.T0_level_1_zone.T0_level_1_zone.zaxis = 0.0 0.0 180.0
+
+tagging.T1_level_1_zone.type             = GeometryRefinement  
+tagging.T1_level_1_zone.shapes           = T1_level_1_zone     
+tagging.T1_level_1_zone.level            = 1                   
+tagging.T1_level_1_zone.T1_level_1_zone.type = box                 
+tagging.T1_level_1_zone.T1_level_1_zone.origin = 1220.0 1100.0 20.0  # -0.5D, -1.5D
+tagging.T1_level_1_zone.T1_level_1_zone.xaxis = 180.0 0.0 0.0
+tagging.T1_level_1_zone.T1_level_1_zone.yaxis = 0.0 360.0 0.0
+tagging.T1_level_1_zone.T1_level_1_zone.zaxis = 0.0 0.0 180.0
+
+tagging.T2_level_1_zone.type             = GeometryRefinement  
+tagging.T2_level_1_zone.shapes           = T2_level_1_zone     
+tagging.T2_level_1_zone.level            = 1                   
+tagging.T2_level_1_zone.T2_level_1_zone.type = box                 
+tagging.T2_level_1_zone.T2_level_1_zone.origin = 1860.0 1100.0 20.0  # -0.5D, -1.5D
+tagging.T2_level_1_zone.T2_level_1_zone.xaxis = 180.0 0.0 0.0
+tagging.T2_level_1_zone.T2_level_1_zone.yaxis = 0.0 360.0 0.0
+tagging.T2_level_1_zone.T2_level_1_zone.zaxis = 0.0 0.0 180.0
 
 #¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨#
 #               TURBINES                #

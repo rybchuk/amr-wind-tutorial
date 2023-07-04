@@ -1,7 +1,7 @@
 #¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨#
 #            SIMULATION CONTROL         #
 #.......................................#
-time.stop_time                           = 3601.0             # Max (simulated) time to evolve [s]
+time.stop_time                           = 7201.0             # Max (simulated) time to evolve [s]
 time.max_step                            = -1          # Max number of time steps; -1 means termination set by timestamps
 time.fixed_dt                            = 0.5        # Use this constant dt if > 0
 time.cfl                                 = 0.95         # CFL factor
@@ -11,7 +11,7 @@ time.checkpoint_interval                 = 1800       # Steps between checkpoint
 #ABL.bndry_file                           = bndry_file.native
 #ABL.bndry_io_mode                        = 0          # 0 = write, 1 = read
 #ABL.bndry_planes                         = ylo xlo
-#ABL.bndry_output_start_time              = 3600.0
+#ABL.bndry_output_start_time              = 7200.0
 #ABL.bndry_var_names                      = velocity temperature tke
 
 incflo.physics                           = ABL # Actuator
@@ -97,14 +97,14 @@ ABL.surface_temp_flux                    = 0.05  # Surface temperature flux [K-m
 #io.output_hdf5_plotfile                  = true  # Uncomment these two lines if save to .hdf instead of plt#####/
 #io.hdf5_compression                      = "ZFP_ACCURACY@0.001"
 
-incflo.post_processing                   = sampling averaging
+incflo.post_processing                   = sampling # averaging
 
 # --- Sampling parameters ---
 sampling.output_frequency                = 900                 
 sampling.fields                          = velocity temperature
 
 #---- sample defs ----
-sampling.labels                          = xy-domain yz-domain 
+sampling.labels                          = xy-domain xz-domain 
 
 sampling.xy-domain.type                  = PlaneSampler        
 sampling.xy-domain.num_points            = 256 256             
@@ -127,7 +127,7 @@ sampling.xz-domain.axis2                 = 0.0 0.0 1270.0
 #averaging.labels                         = means stress
 
 #averaging.averaging_window               = 600.0
-#averaging.averaging_start_time           = 3600.0
+#averaging.averaging_start_time           = 7200.0
 
 #averaging.means.fields                   = velocity
 #averaging.means.averaging_type           = ReAveraging
