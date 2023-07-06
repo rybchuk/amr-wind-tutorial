@@ -32,7 +32,7 @@ With these commands, you can see info like the safe versions as well as differen
 
 Also, before we compile, let's load the version of `gcc` that we will be using
 ```
-(some command to load 2022a)
+module load 2022r2
 module avail
 module load gcc/11.2.0
 ```
@@ -41,7 +41,7 @@ With this done, let's now create our environment.
 ```
 mkdir ${SPACKMANDIR}/spack-july2023
 cd ${SPACKMANDIR}/spack-july2023
-quick-create-dev -d /projects/wakedynamics/orybchuk/spack-nov22 -s openfast@master%gcc@11.2.0 amr-wind@main+openfast+hdf5%gcc@11.2.0
+quick-create-dev -d ${SPACKMANDIR}/spack-july2023 -s openfast@master%gcc@11.2.0 amr-wind@main+openfast+hdf5%gcc@11.2.0
 ```
 This `quick-create-dev` command has flags selected so that that AMR-Wind will work with OpenFAST, and AMR-Wind also has the option to save out certain files using HDF5. If you forget the `+openfast` flag, your AMR-Wind simulations of turbines will crash and give you a confusing error message.
 
