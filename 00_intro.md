@@ -14,5 +14,6 @@ AMR-Wind is a component of the broader [ExaWind](https://github.com/Exawind) pro
 
 In addition to the official docs, here are some other resources that might be helpful.
 * Lawrence Cheung's [full-scale simulation](https://github.com/lawrenceccheung/AWAKEN_summit_setup/tree/main/UnstableABL_farmrun1) with AMR-Wind as part of the AWAKEN project ([the precursor simulation without turbines](https://github.com/lawrenceccheung/AWAKEN_summit_setup/blob/main/UnstableABL_farmrun1/UnstableABL_precursor2.inp), [the turbine simulation](https://github.com/lawrenceccheung/AWAKEN_summit_setup/blob/main/UnstableABL_farmrun1/UnstableABL_farmrun1.inp))
+* Some [extra guidance](https://github.com/lawrenceccheung/amrwind-frontend/blob/afbc1dd284095ee869ba8a9cd3760fdf8b08ca82/docs/openfast_turbine.md) on AMR-Wind simulations from Lawrence Cheung
 * Regis Thedin's [windtools](https://github.com/rthedin/windtools/blob/master/windtools/amrwind/post_processing.py), for post-processing output of AMR-Wind
 * AMReX documentation on how to post-process [plotfiles](https://amrex-codes.github.io/amrex/docs_html/Visualization_Chapter.html) (aka data found in `plt#####/`)
