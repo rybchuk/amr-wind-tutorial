@@ -47,12 +47,12 @@ This `quick-create-dev` command has flags selected so that that AMR-Wind will wo
 
 After creating the environment, I will do some stuff to ensure I get the exact versions of the codes I would like. I'll note that there are proper ways to get specific code versions (I believe tied to externals), but the following hacky approach has worked for me.
 
-Looking through [AMR-Wind commits](https://github.com/Exawind/amr-wind/commits/main), I've determined that I want the code at SHA 4b71037218723e0c63d54c140423ef503ac3c912, and looking through [OpenFAST commits](https://github.com/OpenFAST/openfast/commits/main), I want 18704086dad861ab13daf804825da7c4b8d59428. That OpenFAST commit corresponds to the release of version 3.4.1. In theory, we should be able to grab specific versions of OpenFAST via our `quick-create-dev` command, but `spack info openfast` didn't have `3.4.1` listed, so this is a different approach to get our desired version of OpenFAST.
+Looking through [AMR-Wind commits](https://github.com/Exawind/amr-wind/commits/main), I've determined that I want the code at SHA 4b71037218723e0c63d54c140423ef503ac3c912, and looking through [OpenFAST commits](https://github.com/OpenFAST/openfast/commits/main), I want 18704086dad861ab13daf804825da7c4b8d59428. That OpenFAST commit corresponds to the release of version 3.4.1. In theory, we should be able to grab specific versions of OpenFAST via our `quick-create-dev` command, but `spack info openfast` didn't have `3.4.1` listed, so this is a different approach to get our desired version of OpenFAST. (Note: on July 18, 2023, OpenFAST 3.4.1 is the newest version of OpenFAST that is supported by AMR-Wind)
 
 To download the desired version of AMR-Wind, run
 ```
 rm -rf amr-wind
-git clone git@github.com:Exawind/amr-wind.git
+git clone --recursive git@github.com:Exawind/amr-wind.git
 cd amr-wind
 git checkout 4b71037218723e0c63d54c140423ef503ac3c912
 cd ..
@@ -62,7 +62,7 @@ If the SSH link `git@github.com:Exawind/amr-wind.git` didn't work, try the HTTPS
 Similarly, for OpenFAST, run
 ```
 rm -rf openfast
-git clone git@github.com:OpenFAST/openfast.git
+git clone --recursive git@github.com:OpenFAST/openfast.git
 cd openfast
 git checkout 18704086dad861ab13daf804825da7c4b8d59428
 cd ..
