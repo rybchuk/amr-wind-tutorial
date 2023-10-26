@@ -1,12 +1,14 @@
 # 01_compiling.md
 [Official documentation on compiling](https://exawind.github.io/amr-wind/user/build.html)
 
+### Intro
 Before you run AMR-Wind, you must first compile the LES solver. You may also need to compile additional codes in tandem (e.g., OpenFAST if you want to model turbines). There are two general approaches to compiling AMR-Wind: building from source or using [Spack-Manager](https://github.com/psakievich/spack-manager) ([docs](https://sandialabs.github.io/spack-manager/index.html)). I recommend Spack-Manager, because it can get very complicated to manually compile with all the interdependencies.
 
 In my mind, [Spack](https://github.com/spack/spack) and Spack-Manager give us something like Python's `conda install <library>`, except for software packages. Spack is a hefty and powerful tool, and Spack-Manager was developed to help simplify it for ExaWind users.
 
 If you're trying to quickly set up AMR-Wind, the [Snapshot Developer Workflow Example](https://sandialabs.github.io/spack-manager/user_profiles/developers/snapshot_workflow.html) is a quick way to cover the basics. I'll present a streamlined process here, but if things break, check out the official docs.
 
+### Setting up Spack-Manager
 First, download Spack-Manager. I recommend setting it up somewhere where you have lots of storage (e.g., on Eagle, a `/projects/` directory instead of `/home/`), because it's easy to run out of space quickly. I'll be demoing this install on the DelftBlue supercomputer.
 
 ```
@@ -30,6 +32,8 @@ spack info openfast
 ```
 With these commands, you can see info like the safe versions as well as different flags that can get specified.
 
+
+### Creating our environment
 Also, before we compile, let's load the version of `gcc` that we will be using
 ```
 module load 2022r2
@@ -45,8 +49,10 @@ quick-create-dev -d ${SPACKMANDIR}/spack-july2023 -s openfast@master%gcc@11.2.0 
 ```
 This `quick-create-dev` command has flags selected so that that AMR-Wind will work with OpenFAST, and AMR-Wind also has the option to save out certain files using HDF5. If you forget the `+openfast` flag, your AMR-Wind simulations of turbines will crash and give you a confusing error message.
 
-After creating the environment, I will do some stuff to ensure I get the exact versions of the codes I would like. I'll note that there are proper ways to get specific code versions (I believe tied to externals), but the following hacky approach has worked for me.
+After creating the environment, I will do some stuff to ensure I get the exact versions of the codes I would like. I'll note that there are proper ways to get specific code versions (I believe tied to externals), but both of the two following hacky approaches have worked for me.
 
+
+##### Option 1
 Looking through [AMR-Wind commits](https://github.com/Exawind/amr-wind/commits/main), I've determined that I want the code at SHA 4b71037218723e0c63d54c140423ef503ac3c912, and looking through [OpenFAST commits](https://github.com/OpenFAST/openfast/commits/main), I want 18704086dad861ab13daf804825da7c4b8d59428. That OpenFAST commit corresponds to the release of version 3.4.1. In theory, we should be able to grab specific versions of OpenFAST via our `quick-create-dev` command, but `spack info openfast` didn't have `3.4.1` listed, so this is a different approach to get our desired version of OpenFAST. (Note: on July 18, 2023, OpenFAST 3.4.1 is the newest version of OpenFAST that is supported by AMR-Wind)
 
 To download the desired version of AMR-Wind, run
@@ -68,6 +74,25 @@ git checkout 18704086dad861ab13daf804825da7c4b8d59428
 cd ..
 ```
 
+##### Option 2
+Alternatively, instead of deleting and re-downloading the `amr-wind` directory, after running `quick-create-dev` you can fetch updates back to a certain date:
+```
+cd amr-wind
+git fetch --shallow-since=15/11/2012
+git checkout <SHA>
+```
+
+or a certain number of commits
+```
+cd amr-wind
+git fetch --deepen=<depth>
+git checkout <SHA>
+```
+
+The same goes for `openfast`.
+
+
+### Installing
 Now that we have our specific versions of everything, let Spack compile everything by running
 ```
 spack install
