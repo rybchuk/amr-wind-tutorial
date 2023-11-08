@@ -268,7 +268,7 @@ This script gives you two important things:
 * Information that you should copy-paste into the config file
 * An `avg_theta.dat` file with important information for `ABLMeanBoussinesq`. It is critical that you copy or symbolically link this file into the same place as where you config file will run (usually /scratch/), otherwise AMR-Wind will fail with a mysterious error message
 
-Because we're simulating turbines, we also need to include OpenFAST files for each of the turbines. In this demo, we use 2.8 MW turbines from NREL's open source [turbine repo](https://github.com/NREL/openfast-turbine-models/tree/master/IEA-scaled/NREL-2.8-127/OpenFAST). When simulating OpenFAST turbines through AMR-Wind instead of directly through OpenFAST, it is important to make the follow changes to the OpenFAST files:
+Because we're simulating turbines, we also need to include OpenFAST files for each of the turbines. In this demo, we use 2.8 MW turbines based off of NREL's open source [turbine repo](https://github.com/NREL/openfast-turbine-models/tree/master/IEA-scaled/NREL-2.8-127/OpenFAST). I have modified the OpenFAST files to work with OpenFAST v3.4.1. When simulating OpenFAST turbines through AMR-Wind instead of directly through OpenFAST, it is important to make the follow changes to the OpenFAST files:
 * AeroDyn: Make sure `WakeMod` is 0
 * ElastoDyn: Set the initial RPM `RotSpeed` and inital yaw angle `NacYaw` to reasonable values
 * `*.fst`: Set `CompInflow` to be 2 and `OutFileFmt` to be 1
@@ -278,3 +278,13 @@ When all is said and done, the /scratch/ directory where I run the turbine simul
 ```
 amr_wind  avg_theta.dat	T0_AMRWind_AWAKEN/  T1_AMRWind_AWAKEN/	T2_AMRWind_AWAKEN/  turbine.i
 ```
+
+You will need to make two updates to each of the turbine directories to work on your machine:
+1. Modify the `PerfFileName` in `NREL-2p8-127_DISCON.IN` so that it points to the location of `NREL-2p8-127_Cp_Ct_Cq.txt` on your machine. In theory, you should be able to use a relative directory, but I haven't found that to be the case, so I always specify an aboslute directory.
+2. Modify the `DLL_FileName` in `NREL-2p8-127_ServoDyn.dat` to point to the location of the ROSCO `libdiscon.so` on your machine.
+
+If you're anything like me, you will run into at least two rounds of mistakes when setting up turbine simulations. I recommend the following debugging strategies:
+* If the winds behave funny (especially at the outflow), remove the turbine from your simulation and confirm that the atmospheric simulation runs as expected.
+* If you don't see an obvious wake, double check the yaw both in the `.i` file and in the OpenFAST ElastoDyn file. I am under the impression that OpenFAST and AMR-Wind use different coordinate systems for their yaw values.
+* If you think ROSCO is causing problems, turn the turbine controller off by setting `CompServo` to `0` in the `.fst` file
+* If OpenFAST is seeing unexpected variable names, you compiled OpenFAST with a different version than your turbine model. Either recompile OpenFAST or modify the turbine model ([example](https://github.com/lawrenceccheung/amrwind-frontend/blob/afbc1dd284095ee869ba8a9cd3760fdf8b08ca82/docs/openfast_turbine.md#going-from-openfast-v26-to-v300)).
