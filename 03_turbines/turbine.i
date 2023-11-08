@@ -3,7 +3,7 @@
 #.......................................#
 time.stop_time                           = 7801.0             # Max (simulated) time to evolve [s]
 time.max_step                            = -1          # Max number of time steps; -1 means termination set by timestamps
-time.fixed_dt                            = 0.12        # Use this constant dt if > 0
+time.fixed_dt                            = 0.12        # Use this constant dt if > 0; NOTE: this must be a multiple of the OpenFAST dt
 time.cfl                                 = 0.95         # CFL factor
 
 time.plot_interval                       = 1200       # Steps between plot files
