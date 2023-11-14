@@ -3,8 +3,8 @@ Generated with AeroElasticSE FAST driver
 ---------------------- SIMULATION CONTROL --------------------------------------
 False                  Echo        - Echo input data to <RootName>.ech (flag)
 "FATAL"                AbortLevel  - Error level when simulation should abort (string) {"WARNING", "SEVERE", "FATAL"}
-99999                  TMax        - Total run time (s)
-0.0125                   DT          - Recommended module time step (s)
+9999                  TMax        - Total run time (s)
+0.01                   DT          - Recommended module time step (s)
 2                      InterpOrder - Interpolation order for input/output time history (-) {1=linear, 2=quadratic}
 0                      NumCrctn    - Number of correction iterations (-) {0=explicit calculation, i.e., no corrections}
 99999.0                DT_UJac     - Time between calls to get Jacobians (s)
@@ -21,7 +21,7 @@ False                  Echo        - Echo input data to <RootName>.ech (flag)
 0   		       MHK         - MHK turbine type (switch) {0=Not an MHK turbine; 1=Fixed MHK turbine; 2=Floating MHK turbine}
 ---------------------- ENVIRONMENTAL CONDITIONS --------------------------------
 9.80665                Gravity     - Gravitational acceleration (m/s^2)
-1.225                  AirDens     - Air density (kg/m^3)
+1.17                  AirDens     - Air density (kg/m^3)
 0                      WtrDens     - Water density (kg/m^3)
 1.464E-05              KinVisc     - Kinematic viscosity of working fluid (m^2/s)
 335                    SpdSound    - Speed of sound in working fluid (m/s)
@@ -47,7 +47,7 @@ False                  SumPrint    - Print summary data to "<RootName>.sum" (fla
 99999.0                ChkptTime   - Amount of time between creating checkpoint files for potential restart (s)
 default                DT_Out      - Time step for tabular output (s) (or "default")
 0.0                    TStart      - Time to begin tabular output (s)
-1                      OutFileFmt  - Format for tabular (time-marching) output file (switch) {1: text file [<RootName>.out], 2: binary file [<RootName>.outb], 3: both}
+3                      OutFileFmt  - Format for tabular (time-marching) output file (switch) {1: text file [<RootName>.out], 2: binary file [<RootName>.outb], 3: both}
 True                   TabDelim    - Use tab delimiters in text tabular output file? (flag) {uses spaces if false}
 "ES10.3E2"             OutFmt      - Format used for text tabular output, excluding the time channel.  Resulting field should be 10 characters. (quoted string)
 ---------------------- LINEARIZATION -------------------------------------------

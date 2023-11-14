@@ -3,7 +3,7 @@
 #.......................................#
 time.stop_time                           = 7801.0             # Max (simulated) time to evolve [s]
 time.max_step                            = -1          # Max number of time steps; -1 means termination set by timestamps
-time.fixed_dt                            = 0.125        # Use this constant dt if > 0
+time.fixed_dt                            = 0.12        # Use this constant dt if > 0; NOTE: this must be a multiple of the OpenFAST dt
 time.cfl                                 = 0.95         # CFL factor
 
 time.plot_interval                       = 1200       # Steps between plot files
@@ -211,7 +211,7 @@ Actuator.T0.num_points_tower             = 12
 Actuator.T0.epsilon                      = 5.0 5.0 5.0         
 Actuator.T0.epsilon_tower                = 5.0 5.0 5.0         
 Actuator.T0.openfast_start_time          = 0.0                 
-Actuator.T0.openfast_stop_time           = 99999.0              
+Actuator.T0.openfast_stop_time           = 9999.0              
 Actuator.T0.nacelle_drag_coeff           = 0.0                 
 Actuator.T0.nacelle_area                 = 0.0                 
 Actuator.T0.yaw                          = 0.0   
@@ -227,7 +227,7 @@ Actuator.T1.num_points_tower             = 12
 Actuator.T1.epsilon                      = 5.0 5.0 5.0         
 Actuator.T1.epsilon_tower                = 5.0 5.0 5.0         
 Actuator.T1.openfast_start_time          = 0.0                 
-Actuator.T1.openfast_stop_time           = 99999.0                
+Actuator.T1.openfast_stop_time           = 9999.0                
 Actuator.T1.nacelle_drag_coeff           = 0.0                 
 Actuator.T1.nacelle_area                 = 0.0                 
 Actuator.T1.yaw                          = 0.0   
@@ -243,7 +243,7 @@ Actuator.T2.num_points_tower             = 12
 Actuator.T2.epsilon                      = 5.0 5.0 5.0         
 Actuator.T2.epsilon_tower                = 5.0 5.0 5.0         
 Actuator.T2.openfast_start_time          = 0.0                 
-Actuator.T2.openfast_stop_time           = 99999.0                
+Actuator.T2.openfast_stop_time           = 9999.0                
 Actuator.T2.nacelle_drag_coeff           = 0.0                 
 Actuator.T2.nacelle_area                 = 0.0                 
 Actuator.T2.yaw                          = 0.0   
