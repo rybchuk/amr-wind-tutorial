@@ -12,7 +12,7 @@ time.plot_interval                       = 1200       # Steps between plot files
 time.checkpoint_interval                 = 1200       # Steps between checkpoint files
 ABL.bndry_file                           = ../02_atmosphere/precursor/bndry_file.native
 ABL.bndry_io_mode                        = 1          # 0 = write, 1 = read
-ABL.bndry_planes                         = ylo xlo
+ABL.bndry_planes                         = ylo xlo  # TODO: remove ylo BC data and re-run with periodic y-conditions
 ABL.bndry_output_start_time              = 7200.0
 ABL.bndry_var_names                      = velocity temperature tke
 
@@ -38,7 +38,7 @@ geometry.prob_lo                         = 0.       0.     0.  # Lo corner coord
 geometry.prob_hi                         = 2560.  2560.  1280.  # Hi corner coordinates
 amr.n_cell                               = 128 128 64    # Grid cells at coarsest AMRlevel
 amr.max_level                            = 2           # Max AMR level in hierarchy 
-geometry.is_periodic                     = 0   0   0   # Periodicity x y z (0/1)
+geometry.is_periodic                     = 0   0   0   # Periodicity x y z (0/1)  # TODO: remove ylo BC data and re-run with periodic y-conditions
 incflo.delp                              = 0.  0.  0.  # Prescribed (cyclic) pressure gradient
 
 xlo.type                                 = mass_inflow         
@@ -47,7 +47,7 @@ xlo.temperature                          = 290.0
 xlo.tke                                  = 0.0
 xhi.type                                 = pressure_outflow    
 
-ylo.type                                 = mass_inflow         
+ylo.type                                 = mass_inflow  # TODO: remove ylo BC data and re-run with periodic y-conditions       
 ylo.density                              = 1.225               
 ylo.temperature                          = 290.0               
 ylo.tke                                  = 0.0
@@ -288,3 +288,11 @@ If you're anything like me, you will run into at least two rounds of mistakes wh
 * If you don't see an obvious wake, double check the yaw both in the `.i` file and in the OpenFAST ElastoDyn file. I am under the impression that OpenFAST and AMR-Wind use different coordinate systems for their yaw values.
 * If you think ROSCO is causing problems, turn the turbine controller off by setting `CompServo` to `0` in the `.fst` file
 * If OpenFAST is seeing unexpected variable names, you compiled OpenFAST with a different version than your turbine model. Either recompile OpenFAST or modify the turbine model ([example](https://github.com/lawrenceccheung/amrwind-frontend/blob/afbc1dd284095ee869ba8a9cd3760fdf8b08ca82/docs/openfast_turbine.md#going-from-openfast-v26-to-v300)).
+
+Once you run your simulation, it's a good idea to sanity check results by opening up plotfiles in [ParaView](https://www.paraview.org/). When you open the files, you can see the computational grid and its refinement zones.
+
+![](03_turbines/grid.png)
+
+You can create a hub-height slice and plot the time-averaged x-component of velocity and see three wakes:
+
+![](03_turbines/wakes.png)
