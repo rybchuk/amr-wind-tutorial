@@ -140,7 +140,7 @@ averaging.stress.averaging_type          = ReynoldsStress
 #¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨#
 #            MESH REFINEMENT            #
 #.......................................#
-tagging.labels                           = T0_level_0_zone T1_level_0_zone T2_level_0_zone T0_level_1_zone T1_level_1_zone T2_level_1_zone
+tagging.labels                           = T0_level_0_zone T1_level_0_zone T2_level_0_zone  T1_level_1_zone T2_level_1_zone
 
 # 1st refinement level
 tagging.T0_level_0_zone.type             = GeometryRefinement  
@@ -285,6 +285,7 @@ You will need to make two updates to each of the turbine directories to work on 
 
 If you're anything like me, you will run into at least two rounds of mistakes when setting up turbine simulations. I recommend the following debugging strategies:
 * If the winds behave funny (especially at the outflow), remove the turbine from your simulation and confirm that the atmospheric simulation runs as expected.
+   * One tricky situation in inflow/outflow simulations: if your mean flow is aligned with the x-axis, I recommend saving out both the `ylo` and the `yhi` planes in the precursor simulation. Sometimes running with `ylo` isn't enough because a small amount of flow can enter the domain through `yhi`. This scenario can manifest as a simultion with a growing CFL error.
 * If you don't see an obvious wake, double check the yaw both in the `.i` file and in the OpenFAST ElastoDyn file. I am under the impression that OpenFAST and AMR-Wind use different coordinate systems for their yaw values.
 * If you think ROSCO is causing problems, turn the turbine controller off by setting `CompServo` to `0` in the `.fst` file
 * If OpenFAST is seeing unexpected variable names, you compiled OpenFAST with a different version than your turbine model. Either recompile OpenFAST or modify the turbine model ([example](https://github.com/lawrenceccheung/amrwind-frontend/blob/afbc1dd284095ee869ba8a9cd3760fdf8b08ca82/docs/openfast_turbine.md#going-from-openfast-v26-to-v300)).
